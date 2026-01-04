@@ -1,0 +1,39 @@
+services:
+  moodleapp:
+    build:
+      context: .
+    image: ghcr.io/monkeysoftnl/moodleapp:latest
+    container_name: moodleapp
+    ports:
+      - 80:80
+    volumes:
+      - moodledata:/var/www/moodledata
+    depends_on:
+      - moodledb
+
+  moodledb:
+    image: mysql:latest
+    container_name: moodledb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: moodledb
+      PMA_PORT: 3306
+    depends_on:
+      - moodledb
+
+volumes:
+  dbdata:
+  moodledata:
