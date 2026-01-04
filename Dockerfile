@@ -29,12 +29,15 @@ RUN echo "max_input_vars=5000" >> /usr/local/etc/php/conf.d/docker-php-moodle.in
 # Create the moodledata directory
 RUN mkdir -p /var/www/moodledata
 
+COPY --chown=www-data:www-data ./config.php /var/www/html/config.php
+
 # Set working directory
 WORKDIR /var/www/html
 
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www/ && \
-    chmod -R 755 /var/www
+    chmod -R 755 /var/www && \
+    chmod -R 777 /var/www/moodledata
 
 # Expose port 80
 EXPOSE 80

@@ -8,6 +8,15 @@ services:
       - 80:80
     volumes:
       - moodledata:/var/www/moodledata
+    environment:
+      MOODLE_DBTYPE: mariadb
+      MOODLE_DBHOST: moodledb
+      MOODLE_DBNAME: ${MYSQL_DATABASE}
+      MOODLE_DBUSER: ${MYSQL_USER}
+      MOODLE_DBPASS: ${MYSQL_PASSWORD}
+      MOODLE_DBPREFIX: mdl_
+      MOODLE_DBPORT: 3306
+      MOODLE_WWWROOT: ${MOODLE_WWWROOT}
     depends_on:
       - moodledb
 
